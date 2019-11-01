@@ -64,7 +64,7 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
 
         public bool EditActor(Actor actor)
         {
-            throw new NotImplementedException();
+            context.Entry<Actor>().State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
         public bool EditMovie(Movie movie)

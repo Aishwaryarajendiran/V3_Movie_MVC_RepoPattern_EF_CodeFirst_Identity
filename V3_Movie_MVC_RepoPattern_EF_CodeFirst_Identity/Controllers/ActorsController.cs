@@ -19,7 +19,7 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
         // GET: Actors
         public ActionResult Index()
         {
-            return View(repository.GetMovies());
+            return View(repository.GetActors());
         }
 
         // GET: Actors/Details/5

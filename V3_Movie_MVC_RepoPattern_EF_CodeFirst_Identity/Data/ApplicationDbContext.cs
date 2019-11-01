@@ -16,5 +16,9 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
 
+        internal object Entry<T>()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
