@@ -52,9 +52,28 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
             }
         }
 
-        public bool DeleteActor(Actor actor)
+        public bool DeleteActor(int actorId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var actor = context.Actors.Find(actorId);
+                if(actor!=null)
+                {
+                    context.Actors.Remove(actor);
+                    int result = context.SaveChanges();
+                    if(result == 1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public bool DeleteMovie(Movie movie)
@@ -64,7 +83,20 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
 
         public bool EditActor(Actor actor)
         {
-            context.Entry<Actor>().State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            try 
+            { 
+            context.Entry<Actor>(actor).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            int result = context.SaveChanges();
+            if(result==1)
+            {
+                return true;
+            }
+            return false;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         public bool EditMovie(Movie movie)
@@ -72,9 +104,17 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
             throw new NotImplementedException();
         }
 
-        public Movie GetActorById(int ActorId)
+        public Actor GetActorById(int actorId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return context.Actors.Find(actorId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public IEnumerable<Actor> GetActors()
@@ -108,6 +148,11 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
         }
 
         public IEnumerable<Movie> GetMoviesByGenre(Genre genre)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteActor(Actor actor)
         {
             throw new NotImplementedException();
         }

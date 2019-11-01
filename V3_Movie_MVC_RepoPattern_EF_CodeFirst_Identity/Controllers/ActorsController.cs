@@ -65,19 +65,37 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
         // GET: Actors/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var actor = repository.GetActorById(id);
+            if(actor==null)
+            {
+                return NotFound();
+            }
+            return View(actor);
         }
 
         // POST: Actors/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Actor actor)
         {
             try
             {
                 // TODO: Add update logic here
+                if(!ModelState.IsValid)
+                {
+                    return View();
+                }
+                if(id != actor.Id)
+                {
+                    return View();
+                }
+                bool result = repository.EditActor(actor);
+                if(result)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
 
-                return RedirectToAction(nameof(Index));
+                return View();
             }
             catch
             {
