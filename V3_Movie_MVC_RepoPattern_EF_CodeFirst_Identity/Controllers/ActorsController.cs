@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Models;
+using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.ViewModels;
 
 namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
 {
@@ -106,7 +108,12 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
         // GET: Actors/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var actor = repository.GetActorById(id);
+            if(actor==null)
+            {
+                return NotFound();
+            }
+            return View(actor);
         }
 
         // POST: Actors/Delete/5
@@ -117,13 +124,55 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
             try
             {
                 // TODO: Add delete logic here
+                var actor = repository.GetActorById(id);
+                if (actor != null)
+                {
+                    bool result = repository.DeleteActor(actor);
+                    if(result)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    
+                }
+               
 
-                return RedirectToAction(nameof(Index));
+                return View();
             }
             catch
             {
                 return View();
             }
+        }
+        public ActionResult GetActorsByGender()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GetActorsByGender(Gender gender)
+        {
+            var list = repository.GetActorsByGender(gender);
+            return View(list);
+        }
+        public ActionResult GetActorsByMovie()
+        {
+            var viewModel = new MovieActorsViewModel
+            {
+                Movies = repository.GetMovies().Select(m =>
+                        new SelectListItem(m.Name, m.Id.ToString())).ToList()
+            };
+            
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult GetActorsByMovie(int id)
+        {
+            var viewModel = new MovieActorsViewModel
+            {
+                Movies = repository.GetMovies().Select(m =>
+                        new SelectListItem(m.Name, m.Id.ToString())).ToList(),
+                Actors = repository.GetActorsByMovie(id)
+            };
+            return View(viewModel);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
         bool EditActor(Actor actor);
         bool DeleteActor(Actor actor);
         Actor GetActorById(int ActorId);
-        IEnumerable<Actor> GetActorsByGenre(Gender gender);
+        IEnumerable<Actor> GetActorsByGender(Gender gender);
         IEnumerable<Actor> GetActorsByMovie(int movieId);
-
+        
     }
 }

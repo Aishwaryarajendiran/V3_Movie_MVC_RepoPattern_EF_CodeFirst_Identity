@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Models;
+using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.ViewModels;
 
 namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
 {
@@ -32,20 +34,25 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
         // GET: Movies/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new MovieViewModel
+            {
+                Actors = repository.GetActors().Select(a =>
+                         new SelectListItem(a.Name, a.Id.ToString())).ToList()
+            };
+            return View(viewModel);
         }
 
         // POST: Movies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Movie movie)
+        public ActionResult Create(MovieViewModel viewModel)
         {
             try
             {
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
-                    bool result = repository.AddMovie(movie);
+                    bool result = repository.AddMovie(viewModel.Movie);
                     if(result)
                     {
                         return RedirectToAction(nameof(Index));
