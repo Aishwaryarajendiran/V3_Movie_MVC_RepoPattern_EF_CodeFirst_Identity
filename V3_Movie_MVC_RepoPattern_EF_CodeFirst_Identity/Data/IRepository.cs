@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Models;
+using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.ViewModels;
 
 namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
 {
     public interface IRepository
     {
         IEnumerable<Movie> GetMovies();
-        bool AddMovie(Movie movie);
+        bool AddMovie(MovieViewModel movieViewModel);
         bool EditMovie(Movie movie);
         bool DeleteMovie(Movie movie);
         Movie GetMovieById(int movieId);

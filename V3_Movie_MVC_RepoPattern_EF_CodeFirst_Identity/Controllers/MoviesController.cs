@@ -49,21 +49,24 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+
+
+
                 if (ModelState.IsValid)
                 {
-                    bool result = repository.AddMovie(viewModel.Movie);
-                    if(result)
+                    bool result = repository.AddMovie(viewModel);
+                    if (result)
                     {
                         return RedirectToAction(nameof(Index));
                     }
-                    else
-                    {
-                        return View();
-                    }
                 }
+                viewModel = new MovieViewModel
+                {
+                    Actors = repository.GetActors().Select(a => new SelectListItem(a.Name, a.Id.ToString())).ToList()
+                };
+                
 
-                return View();
+                return View(viewModel);
             }
             catch
             {

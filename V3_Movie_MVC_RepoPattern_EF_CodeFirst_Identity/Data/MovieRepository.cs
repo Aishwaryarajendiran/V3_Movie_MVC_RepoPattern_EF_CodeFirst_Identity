@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Models;
+using V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.ViewModels;
 
 namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
 {
@@ -33,24 +34,7 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
             }
         }
 
-        public bool AddMovie(Movie movie)
-        {
-            try
-            {
-                context.Movies.Add(movie);
-                int result = context.SaveChanges();
-                if (result == 1)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+       
 
         public bool DeleteActor(Actor actor)
         {
@@ -162,6 +146,33 @@ namespace V3_Movie_MVC_RepoPattern_EF_CodeFirst_Identity.Data
             try
             {
                 return context.Actors.Where(a => a.Gender == gender);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool AddMovie(MovieViewModel movieViewModel)
+        {
+            try
+            {
+                context.Movies.Add( movieViewModel.Movie);
+                foreach (var actor in movieViewModel.Actors)
+                {
+                    if (actor.Selected)
+                    {
+                        var existingActor = context.Actors.Find(Convert.ToInt32(actor.Value));
+                        existingActor.Movie = movieViewModel.Movie;
+                        context.SaveChanges();
+                    }
+                   
+                }
+                context.SaveChanges();
+                
+                    return true;
+                
             }
             catch (Exception)
             {
